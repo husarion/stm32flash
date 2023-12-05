@@ -1,0 +1,27 @@
+name: Firmware release
+on:
+  workflow_dispatch:
+    
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Building stm32flash
+      run: |
+        mkdir output
+        docker buildx build --platform linux/arm64 -t stm32flash-arm64 .
+        docker run --rm --platform linux/arm64 -v ./output:/output stm32flash-arm64
+        docker buildx build --platform linux/amd64 -t stm32flash-amd64 .
+        docker run --rm --platform linux/amd64 -v ./output:/output stm32flash-amd64
+
+    - name: Release a firmware
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          output/stm32flash-arm64
+          output/stm32flash-amd64
+        tag_name: ${{ format('{0}-{1}-{2}', github.event.inputs.year, github.event.inputs.month, github.event.inputs.day) }}
