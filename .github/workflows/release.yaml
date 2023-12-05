@@ -21,14 +21,14 @@ jobs:
     - name: Building stm32flash ARM64
       run: |
         mkdir output
-        docker buildx build --platform linux/arm64 -t stm32flash-arm64 .
+        docker buildx build --platform linux/arm64 --load -t stm32flash-arm64 .
         docker image ls
         docker run --rm --platform linux/arm64 -v ./output:/output stm32flash-arm64
 
     - name: Building stm32flash AMD64
       run: |
         mkdir output
-        docker buildx build --platform linux/amd64 -t stm32flash-amd64 .
+        docker buildx build --platform linux/amd64 --load -t stm32flash-amd64 .
         docker image ls
         docker run --rm --platform linux/amd64 -v ./output:/output stm32flash-amd64
 
