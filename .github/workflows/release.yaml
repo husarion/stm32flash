@@ -31,6 +31,11 @@ jobs:
         docker image ls
         docker run --rm --platform linux/amd64 -v ./output:/output stm32flash-amd64
 
+    - name: check the output dir
+      run: |
+        ls -la output
+        echo ${{ format('{0}-{1}-{2}', github.event.inputs.year, github.event.inputs.month, github.event.inputs.day) }}
+
     - name: Release a firmware
       uses: softprops/action-gh-release@v1
       with:
