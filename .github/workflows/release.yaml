@@ -34,7 +34,7 @@ jobs:
     - name: check the output dir
       run: |
         ls -la output
-        echo ${{ format('{0}-{1}-{2}', github.event.inputs.year, github.event.inputs.month, github.event.inputs.day) }}
+        echo ${{ format('{0}-{1}-{2}', github.event.repository.pushed_at.substr(0, 4), github.event.repository.pushed_at.substr(5, 2), github.event.repository.pushed_at.substr(8, 2)) }}
 
     - name: Release a firmware
       uses: softprops/action-gh-release@v1
@@ -42,4 +42,4 @@ jobs:
         files: |
           output/stm32flash-arm64
           output/stm32flash-amd64
-        tag_name: ${{ format('{0}-{1}-{2}', github.event.inputs.year, github.event.inputs.month, github.event.inputs.day) }}
+        tag_name: ${{ format('{0}-{1}-{2}', github.event.repository.pushed_at.substr(0, 4), github.event.repository.pushed_at.substr(5, 2), github.event.repository.pushed_at.substr(8, 2)) }}
