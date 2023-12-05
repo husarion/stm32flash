@@ -13,4 +13,12 @@ RUN apt-get update && apt-get install -y \
 		cmake && \
 	make all
 
-CMD cp /stm32flash/stm32flash /output/stm32flash-$(uname -m)
+CMD ARCH=$(uname -m); \
+    if [ "$ARCH" = "aarch64" ]; then \
+        cp /stm32flash/stm32flash /output/stm32flash-arm64; \
+    elif [ "$ARCH" = "x86_64" ]; then \
+        cp /stm32flash/stm32flash /output/stm32flash-amd64; \
+    else \
+        echo "Unsupported architecture: $ARCH"; \
+        exit 1; \
+    fi
